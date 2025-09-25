@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { 
   ArrowLeft, BookOpen, Calendar, Tag, User, Share2, 
-  Download, Print, Star, Clock, FileText, Video,
+  Download, Printer as Print, Star, Clock, FileText, Video,
   ExternalLink, ChevronRight, ThumbsUp, ThumbsDown
 } from 'lucide-react'
 
