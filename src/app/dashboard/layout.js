@@ -10,6 +10,7 @@ import {
   Menu, X, LogOut, Bell, Search, Home, TrendingUp,
   User, ChevronDown
 } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -18,6 +19,7 @@ export default function DashboardLayout({ children }) {
   const [partner, setPartner] = useState(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const pathname = usePathname()
   const supabase = createClient()
 
   useEffect(() => {
@@ -72,13 +74,16 @@ export default function DashboardLayout({ children }) {
   }
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: Home, current: true },
-    { name: 'Deals', href: '/dashboard/deals', icon: BarChart3, current: false },
-    { name: 'Support', href: '/dashboard/support', icon: Headphones, current: false },
-    { name: 'Knowledge Base', href: '/dashboard/knowledge', icon: FileText, current: false },
-    { name: 'MDF Requests', href: '/dashboard/mdf', icon: TrendingUp, current: false },
-    { name: 'Settings', href: '/dashboard/settings', icon: Settings, current: false },
-  ]
+    { name: 'Dashboard', href: '/dashboard', icon: Home },
+    { name: 'Deals', href: '/dashboard/deals', icon: BarChart3 },
+    { name: 'Support', href: '/dashboard/support', icon: Headphones },
+    { name: 'Knowledge Base', href: '/dashboard/knowledge', icon: FileText },
+    { name: 'MDF Requests', href: '/dashboard/mdf', icon: TrendingUp },
+    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+  ].map(item => ({
+    ...item,
+    current: pathname === item.href
+  }))
 
   return (
     <div className="min-h-screen bg-gray-50">
