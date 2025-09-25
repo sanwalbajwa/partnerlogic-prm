@@ -1,8 +1,48 @@
 // src/app/page.js
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Users, TrendingUp, Shield, Zap, BarChart3, FileText, Headphones, CheckCircle, Star, Play, Globe, Clock, Award, Target } from 'lucide-react'
+import { ArrowRight, Users, TrendingUp, Shield, Zap, BarChart3, FileText, Headphones, CheckCircle, Star, Play, Globe, Clock, Award, Target, ChevronDown } from 'lucide-react'
 
 export default function HomePage() {
+  const [openFAQ, setOpenFAQ] = useState(null)
+  const faqs = [
+    {
+      id: 1,
+      question: "What types of partnerships does AmpleLogic offer?",
+      answer: "We offer four comprehensive partnership models: Referral Partners (earn commission for qualified referrals), Reseller Partners (resell our solutions with full support), Full-Cycle Partners (manage entire sales and implementation cycles), and White-Label Partners (rebrand our solutions with complete customization)."
+    },
+    {
+      id: 2,
+      question: "How does the tier-based partner program work?",
+      answer: "Partners are automatically assigned to Bronze, Silver, Gold, or Platinum tiers based on performance metrics including revenue generated, deals closed, and certifications earned. Higher tiers unlock enhanced benefits like increased MDF allocations, better discount percentages, priority lead routing, and premium support levels."
+    },
+    {
+      id: 3,
+      question: "What level of support do partners receive?",
+      answer: "Every partner receives a dedicated partner success manager, complete access to our knowledge base and training materials, comprehensive sales collateral, and 24/7 technical support. We also provide presales engineering support, co-selling assistance for major opportunities, and regular business reviews to ensure your success."
+    },
+    {
+      id: 4,
+      question: "How quickly can I get started as a partner?",
+      answer: "Our streamlined onboarding process gets you up and running quickly. Once your partnership agreement is signed, you'll receive access to PartnerLogic within 24 hours. Your dedicated partner manager will schedule comprehensive onboarding within 48 hours, and most partners register their first deal within one week."
+    },
+    {
+      id: 5,
+      question: "Is there any cost to join the partner program?",
+      answer: "Joining the AmpleLogic partner program is completely free with no upfront costs or ongoing fees. We invest heavily in our partners' success by providing all tools, training, support, and resources at no charge. Our success is directly tied to your success, which is why we're committed to providing exceptional value."
+    },
+    {
+      id: 6,
+      question: "What makes PartnerLogic different from other PRM platforms?",
+      answer: "PartnerLogic is purpose-built for modern partner relationships with intelligent automation, real-time collaboration tools, and comprehensive analytics. Our platform integrates seamlessly with existing business systems, provides tier-based partner progression, and offers enterprise-grade security with complete data isolation for each partner organization."
+    }
+  ]
+
+  const toggleFAQ = (id) => {
+    setOpenFAQ(openFAQ === id ? null : id)
+  }
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -218,65 +258,71 @@ export default function HomePage() {
 
           {/* Feature Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {/* Deal Management */}
-            <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200">
-              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <BarChart3 className="h-7 w-7 text-white" />
-              </div>
-              <h3 className="font-bold mb-3 text-gray-900">Agreement Signing</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Sign partnership agreements and choose your ideal partner type based on your business model
-              </p>
-              {/* Connector Line */}
-              <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-to-r from-blue-200 to-green-200 -z-10"></div>
-            </div>
+  {/* Deal Management */}
+  <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200">
+    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+      <BarChart3 className="h-7 w-7 text-white" />
+    </div>
+    <h3 className="font-bold mb-3 text-gray-900">Agreement Signing</h3>
+    <p className="text-sm text-gray-600 leading-relaxed">
+      Sign partnership agreements and choose your ideal partner type based on your business model
+    </p>
+  </div>
 
-            {/* Step 2 */}
-            <div className="text-center relative">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-white shadow-xl">
-                <span className="text-white font-bold text-lg">2</span>
-              </div>
-              <h3 className="font-bold mb-3 text-gray-900">Platform Access</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Receive secure credentials and instant access to the complete PartnerLogic platform
-              </p>
-              <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-to-r from-green-200 to-yellow-200 -z-10"></div>
-            </div>
+  {/* Step 2 */}
+  <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200">
+    <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+      <CheckCircle className="h-7 w-7 text-white" />
+    </div>
+    <h3 className="font-bold mb-3 text-gray-900">Platform Access</h3>
+    <p className="text-sm text-gray-600 leading-relaxed">
+      Receive secure credentials and instant access to the complete PartnerLogic platform
+    </p>
+  </div>
 
-            {/* Step 3 */}
-            <div className="text-center relative">
-              <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-white shadow-xl">
-                <span className="text-white font-bold text-lg">3</span>
-              </div>
-              <h3 className="font-bold mb-3 text-gray-900">Training & Resources</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Access comprehensive knowledge base, interactive training, and premium sales tools
-              </p>
-              <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-to-r from-yellow-200 to-purple-200 -z-10"></div>
-            </div>
+  {/* Step 3 */}
+  <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-yellow-200">
+    <div className="w-14 h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+      <FileText className="h-7 w-7 text-white" />
+    </div>
+    <h3 className="font-bold mb-3 text-gray-900">Training & Resources</h3>
+    <p className="text-sm text-gray-600 leading-relaxed">
+      Access comprehensive knowledge base, interactive training, and premium sales tools
+    </p>
+  </div>
 
-            {/* Step 4 */}
-            <div className="text-center relative">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-white shadow-xl">
-                <span className="text-white font-bold text-lg">4</span>
-              </div>
-              <h3 className="font-bold mb-3 text-gray-900">Dedicated Support</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Get paired with a dedicated partner manager and technical support team
-              </p>
-              <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-to-r from-purple-200 to-cyan-200 -z-10"></div>
-            </div>
+  {/* Step 4 */}
+  <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-purple-200">
+    <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+      <Headphones className="h-7 w-7 text-white" />
+    </div>
+    <h3 className="font-bold mb-3 text-gray-900">Dedicated Support</h3>
+    <p className="text-sm text-gray-600 leading-relaxed">
+      Get paired with a dedicated partner manager and technical support team
+    </p>
+  </div>
 
-            {/* Step 5 */}
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-white shadow-xl">
-                <span className="text-white font-bold text-lg">5</span>
-              </div>
-              <h3 className="font-bold mb-3 text-gray-900">Start Selling</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Begin registering deals, accessing MDF funds, and earning revenue with full support
-              </p>
-            </div>
+  {/* Step 5 */}
+  <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-cyan-200">
+    <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+      <TrendingUp className="h-7 w-7 text-white" />
+    </div>
+    <h3 className="font-bold mb-3 text-gray-900">Start Selling</h3>
+    <p className="text-sm text-gray-600 leading-relaxed">
+      Begin registering deals, accessing MDF funds, and earning revenue with full support
+    </p>
+  </div>
+
+  {/* Step 6 - Optional: Add a sixth card to make the grid more balanced */}
+  <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-indigo-200">
+    <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+      <Award className="h-7 w-7 text-white" />
+    </div>
+    <h3 className="font-bold mb-3 text-gray-900">Grow & Scale</h3>
+    <p className="text-sm text-gray-600 leading-relaxed">
+      Advance through partner tiers and unlock premium benefits as your business grows
+    </p>
+  </div>
           </div>
 
           {/* Timeline Stats */}
@@ -448,65 +494,65 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="space-y-8">
-            {/* FAQ Item 1 */}
-            <div className="border-b border-gray-200 pb-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                What types of partnerships does AmpleLogic offer?
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                We offer four comprehensive partnership models: Referral Partners (earn commission for qualified referrals), Reseller Partners (resell our solutions with full support), Full-Cycle Partners (manage entire sales and implementation cycles), and White-Label Partners (rebrand our solutions with complete customization).
-              </p>
-            </div>
+          <div className="space-y-4">
+            {faqs.map((faq) => (
+              <div
+                key={faq.id}
+                className="border border-gray-200 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
+              >
+                <button
+                  onClick={() => toggleFAQ(faq.id)}
+                  className="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 rounded-xl transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                  aria-expanded={openFAQ === faq.id}
+                  aria-controls={`faq-answer-${faq.id}`}
+                >
+                  <h3 className="text-lg font-semibold text-gray-900 pr-8">
+                    {faq.question}
+                  </h3>
+                  <div className="flex-shrink-0">
+                    <ChevronDown
+                      className={`h-5 w-5 text-gray-500 transition-transform duration-300 ${
+                        openFAQ === faq.id ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </div>
+                </button>
+                
+                <div
+                  id={`faq-answer-${faq.id}`}
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    openFAQ === faq.id ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="px-6 pb-5 pt-0">
+                    <div className="border-t border-gray-100 pt-4">
+                      <p className="text-gray-700 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
-            {/* FAQ Item 2 */}
-            <div className="border-b border-gray-200 pb-8">
+          {/* Additional Help Section */}
+          <div className="mt-16 text-center">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-100">
               <h3 className="text-xl font-bold text-gray-900 mb-4">
-                How does the tier-based partner program work?
+                Still have questions?
               </h3>
-              <p className="text-gray-700 leading-relaxed">
-                Partners are automatically assigned to Bronze, Silver, Gold, or Platinum tiers based on performance metrics including revenue generated, deals closed, and certifications earned. Higher tiers unlock enhanced benefits like increased MDF allocations, better discount percentages, priority lead routing, and premium support levels.
+              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                Our partner success team is here to help you every step of the way. Get personalized answers to your specific questions.
               </p>
-            </div>
-
-            {/* FAQ Item 3 */}
-            <div className="border-b border-gray-200 pb-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                What level of support do partners receive?
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                Every partner receives a dedicated partner success manager, complete access to our knowledge base and training materials, comprehensive sales collateral, and 24/7 technical support. We also provide presales engineering support, co-selling assistance for major opportunities, and regular business reviews to ensure your success.
-              </p>
-            </div>
-
-            {/* FAQ Item 4 */}
-            <div className="border-b border-gray-200 pb-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                How quickly can I get started as a partner?
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                Our streamlined onboarding process gets you up and running quickly. Once your partnership agreement is signed, you'll receive access to PartnerLogic within 24 hours. Your dedicated partner manager will schedule comprehensive onboarding within 48 hours, and most partners register their first deal within one week.
-              </p>
-            </div>
-
-            {/* FAQ Item 5 */}
-            <div className="border-b border-gray-200 pb-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Is there any cost to join the partner program?
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                Joining the AmpleLogic partner program is completely free with no upfront costs or ongoing fees. We invest heavily in our partners' success by providing all tools, training, support, and resources at no charge. Our success is directly tied to your success, which is why we're committed to providing exceptional value.
-              </p>
-            </div>
-
-            {/* FAQ Item 6 */}
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                What makes PartnerLogic different from other PRM platforms?
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                PartnerLogic is purpose-built for modern partner relationships with intelligent automation, real-time collaboration tools, and comprehensive analytics. Our platform integrates seamlessly with existing business systems, provides tier-based partner progression, and offers enterprise-grade security with complete data isolation for each partner organization.
-              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                  Contact Partner Success
+                </button>
+                <button className="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors duration-200">
+                  Schedule a Call
+                </button>
+              </div>
             </div>
           </div>
         </div>

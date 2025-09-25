@@ -518,111 +518,128 @@ export default function SettingsPage() {
             {/* Security Tab */}
             {activeTab === 'security' && (
               <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Change Password</h3>
-                  
-                  <div className="space-y-6 max-w-md">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Current Password *
-                      </label>
-                      <div className="relative">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">Change Password</h3>
+                    
+                    <div className="space-y-6 max-w-md">
+                        <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Current Password *
+                        </label>
+                        <div className="relative">
+                            <input
+                            type={showCurrentPassword ? "text" : "password"}
+                            value={passwordData.current_password}
+                            onChange={(e) => handleInputChange('password', 'current_password', e.target.value)}
+                            className={`block w-full px-3 py-2 pr-10 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                errors.current_password ? 'border-red-300' : 'border-gray-300'
+                            }`}
+                            placeholder="Enter current password"
+                            />
+                            <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center z-10"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                setShowCurrentPassword(!showCurrentPassword)
+                            }}
+                            >
+                            {showCurrentPassword ? (
+                                <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                            ) : (
+                                <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                            )}
+                            </button>
+                        </div>
+                        {errors.current_password && <p className="mt-1 text-sm text-red-600">{errors.current_password}</p>}
+                        </div>
+
+                        <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            New Password *
+                        </label>
+                        <div className="relative">
+                            <input
+                            type={showNewPassword ? "text" : "password"}
+                            value={passwordData.new_password}
+                            onChange={(e) => handleInputChange('password', 'new_password', e.target.value)}
+                            className={`block w-full px-3 py-2 pr-10 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                errors.new_password ? 'border-red-300' : 'border-gray-300'
+                            }`}
+                            placeholder="Enter new password"
+                            />
+                            <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center z-10"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                setShowNewPassword(!showNewPassword)
+                            }}
+                            >
+                            {showNewPassword ? (
+                                <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                            ) : (
+                                <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                            )}
+                            </button>
+                        </div>
+                        {errors.new_password && <p className="mt-1 text-sm text-red-600">{errors.new_password}</p>}
+                        <p className="mt-1 text-sm text-gray-500">Must be at least 8 characters long</p>
+                        </div>
+
+                        <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Confirm New Password *
+                        </label>
                         <input
-                          type={showCurrentPassword ? "text" : "password"}
-                          value={passwordData.current_password}
-                          onChange={(e) => handleInputChange('password', 'current_password', e.target.value)}
-                          className={`block w-full px-3 py-2 pr-10 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                            errors.current_password ? 'border-red-300' : 'border-gray-300'
-                          }`}
+                            type="password"
+                            value={passwordData.confirm_password}
+                            onChange={(e) => handleInputChange('password', 'confirm_password', e.target.value)}
+                            className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                            errors.confirm_password ? 'border-red-300' : 'border-gray-300'
+                            }`}
+                            placeholder="Confirm new password"
                         />
+                        {errors.confirm_password && <p className="mt-1 text-sm text-red-600">{errors.confirm_password}</p>}
+                        </div>
+
                         <button
-                          type="button"
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                        onClick={changePassword}
+                        disabled={saving}
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                         >
-                          {showCurrentPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
+                        {saving ? (
+                            <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                            Updating...
+                            </>
+                        ) : (
+                            <>
+                            <Key className="h-4 w-4 mr-2" />
+                            Update Password
+                            </>
+                        )}
                         </button>
-                      </div>
-                      {errors.current_password && <p className="mt-1 text-sm text-red-600">{errors.current_password}</p>}
+                    </div>
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        New Password *
-                      </label>
-                      <div className="relative">
-                        <input
-                          type={showNewPassword ? "text" : "password"}
-                          value={passwordData.new_password}
-                          onChange={(e) => handleInputChange('password', 'new_password', e.target.value)}
-                          className={`block w-full px-3 py-2 pr-10 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                            errors.new_password ? 'border-red-300' : 'border-gray-300'
-                          }`}
-                        />
-                        <button
-                          type="button"
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                          onClick={() => setShowNewPassword(!showNewPassword)}
-                        >
-                          {showNewPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
-                        </button>
-                      </div>
-                      {errors.new_password && <p className="mt-1 text-sm text-red-600">{errors.new_password}</p>}
-                      <p className="mt-1 text-sm text-gray-500">Must be at least 8 characters long</p>
+                    {/* Security Info */}
+                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                    <div className="flex">
+                        <Shield className="h-5 w-5 text-blue-400 flex-shrink-0" />
+                        <div className="ml-3">
+                        <h3 className="text-sm font-medium text-blue-800">Security Tips</h3>
+                        <div className="mt-2 text-sm text-blue-700">
+                            <ul className="list-disc pl-5 space-y-1">
+                            <li>Use a strong, unique password</li>
+                            <li>Enable two-factor authentication when available</li>
+                            <li>Don't share your login credentials</li>
+                            <li>Log out when using shared computers</li>
+                            </ul>
+                        </div>
+                        </div>
                     </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Confirm New Password *
-                      </label>
-                      <input
-                        type="password"
-                        value={passwordData.confirm_password}
-                        onChange={(e) => handleInputChange('password', 'confirm_password', e.target.value)}
-                        className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                          errors.confirm_password ? 'border-red-300' : 'border-gray-300'
-                        }`}
-                      />
-                      {errors.confirm_password && <p className="mt-1 text-sm text-red-600">{errors.confirm_password}</p>}
                     </div>
-
-                    <button
-                      onClick={changePassword}
-                      disabled={saving}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                    >
-                      {saving ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          Updating...
-                        </>
-                      ) : (
-                        <>
-                          <Key className="h-4 w-4 mr-2" />
-                          Update Password
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Security Info */}
-                <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                  <div className="flex">
-                    <Shield className="h-5 w-5 text-blue-400 flex-shrink-0" />
-                    <div className="ml-3">
-                      <h3 className="text-sm font-medium text-blue-800">Security Tips</h3>
-                      <div className="mt-2 text-sm text-blue-700">
-                        <ul className="list-disc pl-5 space-y-1">
-                          <li>Use a strong, unique password</li>
-                          <li>Enable two-factor authentication when available</li>
-                          <li>Don't share your login credentials</li>
-                          <li>Log out when using shared computers</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             )}
 
