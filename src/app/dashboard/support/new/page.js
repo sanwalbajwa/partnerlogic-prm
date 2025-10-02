@@ -397,7 +397,7 @@ export default function NewSupportTicketPage() {
                     id="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    className={`block w-full px-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                       errors.subject ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                     }`}
                     placeholder="Brief summary of your issue or request"
@@ -418,7 +418,7 @@ export default function NewSupportTicketPage() {
                     rows={6}
                     value={formData.description}
                     onChange={handleInputChange}
-                    className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
+                    className={`block w-full px-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
                       errors.description ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                     }`}
                     placeholder="Please provide detailed information about your issue, including:&#10;• What you were trying to do&#10;• What happened instead&#10;• Any error messages you received&#10;• Steps to reproduce the issue"

@@ -270,7 +270,7 @@ export default function NewDealPage() {
                     id="customer_name"
                     value={formData.customer_name}
                     onChange={handleInputChange}
-                    className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    className={`block w-full text-black px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                       errors.customer_name ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                     }`}
                     placeholder="Enter customer contact name"
@@ -290,7 +290,7 @@ export default function NewDealPage() {
                     id="customer_email"
                     value={formData.customer_email}
                     onChange={handleInputChange}
-                    className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    className={`block w-full px-3 text-black py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                       errors.customer_email ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                     }`}
                     placeholder="customer@company.com"
@@ -310,7 +310,7 @@ export default function NewDealPage() {
                     id="customer_company"
                     value={formData.customer_company}
                     onChange={handleInputChange}
-                    className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    className={`block w-full px-3 text-black py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                       errors.customer_company ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                     }`}
                     placeholder="Enter company name"
@@ -330,7 +330,7 @@ export default function NewDealPage() {
                     id="customer_phone"
                     value={formData.customer_phone}
                     onChange={handleInputChange}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="(555) 123-4567"
                   />
                 </div>
@@ -361,7 +361,7 @@ export default function NewDealPage() {
                       step="0.01"
                       value={formData.deal_value}
                       onChange={handleInputChange}
-                      className={`block w-full pl-10 pr-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      className={`block w-full pl-10 pr-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                         errors.deal_value ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                       }`}
                       placeholder="50000.00"
@@ -381,7 +381,7 @@ export default function NewDealPage() {
                     id="stage"
                     value={formData.stage}
                     onChange={handleInputChange}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     {stages.map(stage => (
                       <option key={stage.value} value={stage.value}>
@@ -400,7 +400,7 @@ export default function NewDealPage() {
                     id="priority"
                     value={formData.priority}
                     onChange={handleInputChange}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     {priorities.map(priority => (
                       <option key={priority.value} value={priority.value}>
@@ -419,7 +419,7 @@ export default function NewDealPage() {
                     id="support_type_needed"
                     value={formData.support_type_needed}
                     onChange={handleInputChange}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     {supportTypes.map(type => (
                       <option key={type.value} value={type.value}>
@@ -448,7 +448,7 @@ export default function NewDealPage() {
                   rows={4}
                   value={formData.notes}
                   onChange={handleInputChange}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Add any additional notes, requirements, or context about this deal..."
                 />
               </div>

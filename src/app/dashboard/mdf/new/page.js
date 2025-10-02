@@ -318,7 +318,7 @@ export default function NewMDFRequestPage() {
                     id="campaign_name"
                     value={formData.campaign_name}
                     onChange={handleInputChange}
-                    className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    className={`block w-full px-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                       errors.campaign_name ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                     }`}
                     placeholder="Q1 2025 Trade Show Participation"
@@ -344,7 +344,7 @@ export default function NewMDFRequestPage() {
                       step="0.01"
                       value={formData.requested_amount}
                       onChange={handleInputChange}
-                      className={`block w-full pl-10 pr-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      className={`block w-full pl-10 pr-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                         errors.requested_amount ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                       }`}
                       placeholder="15000.00"
@@ -364,7 +364,7 @@ export default function NewMDFRequestPage() {
                     id="campaign_type"
                     value={formData.campaign_type}
                     onChange={handleInputChange}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     {campaignTypes.map(type => (
                       <option key={type.value} value={type.value}>
@@ -387,7 +387,7 @@ export default function NewMDFRequestPage() {
                     id="start_date"
                     value={formData.start_date}
                     onChange={handleInputChange}
-                    className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    className={`block w-full px-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                       errors.start_date ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                     }`}
                   />
@@ -406,7 +406,7 @@ export default function NewMDFRequestPage() {
                     id="end_date"
                     value={formData.end_date}
                     onChange={handleInputChange}
-                    className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    className={`block w-full px-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                       errors.end_date ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                     }`}
                   />
@@ -432,7 +432,7 @@ export default function NewMDFRequestPage() {
                     rows={4}
                     value={formData.description}
                     onChange={handleInputChange}
-                    className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
+                    className={`block w-full px-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
                       errors.description ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                     }`}
                     placeholder="Describe your campaign objectives, target audience, and planned activities..."
@@ -452,7 +452,7 @@ export default function NewMDFRequestPage() {
                     id="target_audience"
                     value={formData.target_audience}
                     onChange={handleInputChange}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enterprise decision makers, IT professionals, etc."
                   />
                 </div>
@@ -497,7 +497,7 @@ export default function NewMDFRequestPage() {
                     min="0"
                     value={formData.expected_leads}
                     onChange={handleInputChange}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="50"
                   />
                 </div>
@@ -513,7 +513,7 @@ export default function NewMDFRequestPage() {
                     min="0"
                     value={formData.expected_meetings}
                     onChange={handleInputChange}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="15"
                   />
                 </div>
@@ -529,7 +529,7 @@ export default function NewMDFRequestPage() {
                     min="0"
                     value={formData.expected_deals}
                     onChange={handleInputChange}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="3"
                   />
                 </div>

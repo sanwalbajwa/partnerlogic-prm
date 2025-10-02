@@ -287,7 +287,7 @@ export default function SupportTicketDetailsPage({ params }) {
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Add a message or update to this ticket..."
-                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                        className="block w-full px-3 py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                         rows={3}
                       />
                     </div>
@@ -441,7 +441,7 @@ export default function SupportTicketDetailsPage({ params }) {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Partner Type</span>
-                    <span className="font-medium capitalize">{partner?.organization?.type?.replace('_', ' ')}</span>
+                    <span className="font-medium capitalize text-black">{partner?.organization?.type?.replace('_', ' ')}</span>
                   </div>
                   
                   <div className="flex justify-between">
@@ -458,7 +458,7 @@ export default function SupportTicketDetailsPage({ params }) {
                   
                   <div className="flex justify-between">
                     <span className="text-gray-600">Email</span>
-                    <span className="font-medium">{partner?.email}</span>
+                    <span className="font-medium text-black">{partner?.email}</span>
                   </div>
                 </div>
               </div>

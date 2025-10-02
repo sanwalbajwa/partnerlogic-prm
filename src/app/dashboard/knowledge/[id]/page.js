@@ -374,11 +374,11 @@ export default function KnowledgeArticlePage({ params }) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Published</span>
-                  <span className="font-medium">{new Date(article.created_at).toLocaleDateString()}</span>
+                  <span className="font-medium text-black">{new Date(article.created_at).toLocaleDateString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Last Updated</span>
-                  <span className="font-medium">{new Date(article.updated_at).toLocaleDateString()}</span>
+                  <span className="font-medium text-black">{new Date(article.updated_at).toLocaleDateString()}</span>
                 </div>
               </div>
             </div>

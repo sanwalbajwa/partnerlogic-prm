@@ -289,199 +289,198 @@ export default function DealDetailsPage({ params }) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Deal Information */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-              <div className="p-6 border-b border-gray-200">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-gray-900">Deal Information</h2>
-                  <button className="p-2 text-gray-400 hover:text-gray-600">
-                    <Edit2 className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-              
-              <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <User className="h-5 w-5 text-gray-400" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">Contact</p>
-                        <p className="text-sm text-gray-600">{deal.customer_name}</p>
-                      </div>
-                    </div>
+  {/* Deal Progress - MOVED TO TOP */}
+  <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="p-6 border-b border-gray-200">
+      <h2 className="text-lg font-semibold text-gray-900">Deal Progress</h2>
+    </div>
+    
+    <div className="p-6">
+      <div className="flex items-center justify-between mb-6">
+        <span className="text-sm font-medium text-gray-900">Current Stage</span>
+        <select
+          value={newStage}
+          onChange={(e) => updateDealStage(e.target.value)}
+          disabled={updating}
+          className="px-3 py-1 border border-gray-300 text-black rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+        >
+          {stages.slice(0, -2).map(stage => (
+            <option key={stage.value} value={stage.value}>
+              {stage.label}
+            </option>
+          ))}
+          <option value="closed_won">Closed Won</option>
+          <option value="closed_lost">Closed Lost</option>
+        </select>
+      </div>
 
-                    <div className="flex items-center space-x-3">
-                      <Mail className="h-5 w-5 text-gray-400" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">Email</p>
-                        <a href={`mailto:${deal.customer_email}`} className="text-sm text-blue-600 hover:text-blue-700">
-                          {deal.customer_email}
-                        </a>
-                      </div>
-                    </div>
+      <div className="relative">
+        <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+          <div
+            style={{ width: `${((stages.findIndex(s => s.value === deal.stage) + 1) / stages.length) * 100}%` }}
+            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500 transition-all duration-300"
+          />
+        </div>
+        
+        <div className="flex justify-between text-xs text-gray-600">
+          {stages.slice(0, -2).map((stage, index) => (
+            <span key={stage.value} className={`${
+              stages.findIndex(s => s.value === deal.stage) >= index ? 'text-blue-600 font-medium' : ''
+            }`}>
+              {stage.label}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
 
-                    <div className="flex items-center space-x-3">
-                      <Building2 className="h-5 w-5 text-gray-400" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">Company</p>
-                        <p className="text-sm text-gray-600">{deal.customer_company}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <DollarSign className="h-5 w-5 text-gray-400" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">Deal Value</p>
-                        <p className="text-sm text-gray-600">{formatCurrency(deal.deal_value)}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                      <Tag className="h-5 w-5 text-gray-400" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">Support Type</p>
-                        <p className="text-sm text-gray-600 capitalize">
-                          {deal.support_type_needed?.replace('_', ' ')}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                      <Calendar className="h-5 w-5 text-gray-400" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">Created</p>
-                        <p className="text-sm text-gray-600">
-                          {new Date(deal.created_at).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {deal.notes && (
-                  <div className="mt-6 pt-6 border-t border-gray-200">
-                    <h3 className="text-sm font-medium text-gray-900 mb-2">Notes</h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">{deal.notes}</p>
-                  </div>
-                )}
-              </div>
+  {/* Deal Information - NOW SECOND */}
+  <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="p-6 border-b border-gray-200">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-gray-900">Deal Information</h2>
+        <button className="p-2 text-gray-400 hover:text-gray-600">
+          <Edit2 className="h-5 w-5" />
+        </button>
+      </div>
+    </div>
+    
+    <div className="p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <div className="flex items-center space-x-3">
+            <User className="h-5 w-5 text-gray-400" />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Contact</p>
+              <p className="text-sm text-gray-600">{deal.customer_name}</p>
             </div>
+          </div>
 
-            {/* Stage Progress */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-              <div className="p-6 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">Deal Progress</h2>
-              </div>
-              
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-sm font-medium text-gray-900">Current Stage</span>
-                  <select
-                    value={newStage}
-                    onChange={(e) => updateDealStage(e.target.value)}
-                    disabled={updating}
-                    className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                  >
-                    {stages.slice(0, -2).map(stage => (
-                      <option key={stage.value} value={stage.value}>
-                        {stage.label}
-                      </option>
-                    ))}
-                    <option value="closed_won">Closed Won</option>
-                    <option value="closed_lost">Closed Lost</option>
-                  </select>
-                </div>
-
-                <div className="relative">
-                  <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
-                    <div
-                      style={{ width: `${((stages.findIndex(s => s.value === deal.stage) + 1) / stages.length) * 100}%` }}
-                      className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500 transition-all duration-300"
-                    />
-                  </div>
-                  
-                  <div className="flex justify-between text-xs text-gray-600">
-                    {stages.slice(0, -2).map((stage, index) => (
-                      <span key={stage.value} className={`${
-                        stages.findIndex(s => s.value === deal.stage) >= index ? 'text-blue-600 font-medium' : ''
-                      }`}>
-                        {stage.label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
+          <div className="flex items-center space-x-3">
+            <Mail className="h-5 w-5 text-gray-400" />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Email</p>
+              <a href={`mailto:${deal.customer_email}`} className="text-sm text-blue-600 hover:text-blue-700">
+                {deal.customer_email}
+              </a>
             </div>
+          </div>
 
-            {/* Activity Timeline */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-              <div className="p-6 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">Activity Timeline</h2>
-              </div>
-              
-              <div className="p-6">
-                {/* Add Note */}
-                {/* Add Note */}
-                <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                  <div className="flex space-x-3">
-                    <div className="flex-1">
-                      <textarea
-                        value={newNote}
-                        onChange={(e) => setNewNote(e.target.value)}
-                        placeholder="Add a note or update about this deal..."
-                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
-                        rows={3}
-                      />
-                    </div>
-                    <button
-                      onClick={addNote}
-                      disabled={!newNote.trim() || addingNote}
-                      className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {addingNote ? (
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      ) : (
-                        'Add Note'
-                      )}
-                    </button>
+          <div className="flex items-center space-x-3">
+            <Building2 className="h-5 w-5 text-gray-400" />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Company</p>
+              <p className="text-sm text-gray-600">{deal.customer_company}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex items-center space-x-3">
+            <DollarSign className="h-5 w-5 text-gray-400" />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Deal Value</p>
+              <p className="text-sm text-gray-600">{formatCurrency(deal.deal_value)}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <Tag className="h-5 w-5 text-gray-400" />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Support Type</p>
+              <p className="text-sm text-gray-600 capitalize">
+                {deal.support_type_needed?.replace('_', ' ')}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <Calendar className="h-5 w-5 text-gray-400" />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Created</p>
+              <p className="text-sm text-gray-600">
+                {new Date(deal.created_at).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {deal.notes && (
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <h3 className="text-sm font-medium text-gray-900 mb-2">Notes</h3>
+          <p className="text-sm text-gray-600 leading-relaxed">{deal.notes}</p>
+        </div>
+      )}
+    </div>
+  </div>
+
+  {/* Activity Timeline - REMAINS THIRD */}
+  <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="p-6 border-b border-gray-200">
+      <h2 className="text-lg font-semibold text-gray-900">Activity Timeline</h2>
+    </div>
+    
+    <div className="p-6">
+      {/* Add Note */}
+      <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+        <div className="flex space-x-3">
+          <div className="flex-1">
+            <textarea
+              value={newNote}
+              onChange={(e) => setNewNote(e.target.value)}
+              placeholder="Add a note or update about this deal..."
+              className="block w-full text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+              rows={3}
+            />
+          </div>
+          <button
+            onClick={addNote}
+            disabled={!newNote.trim() || addingNote}
+            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {addingNote ? (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            ) : (
+              'Add Note'
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Activity List */}
+      <div className="space-y-4">
+        {activities.length === 0 ? (
+          <div className="text-center py-6">
+            <Activity className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+            <p className="text-gray-600">No activity yet</p>
+          </div>
+        ) : (
+          activities.map((activity) => {
+            const ActivityIcon = getActivityIcon(activity.activity_type)
+            return (
+              <div key={activity.id} className="flex space-x-3">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <ActivityIcon className="h-4 w-4 text-blue-600" />
                   </div>
                 </div>
-
-                {/* Activity List */}
-                <div className="space-y-4">
-                  {activities.length === 0 ? (
-                    <div className="text-center py-6">
-                      <Activity className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                      <p className="text-gray-600">No activity yet</p>
-                    </div>
-                  ) : (
-                    activities.map((activity) => {
-                      const ActivityIcon = getActivityIcon(activity.activity_type)
-                      return (
-                        <div key={activity.id} className="flex space-x-3">
-                          <div className="flex-shrink-0">
-                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                              <ActivityIcon className="h-4 w-4 text-blue-600" />
-                            </div>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm text-gray-900">
-                              {activity.description}
-                            </div>
-                            <div className="text-xs text-gray-500 mt-1">
-                              {new Date(activity.created_at).toLocaleString()}
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    })
-                  )}
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm text-gray-900">
+                    {activity.description}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {new Date(activity.created_at).toLocaleString()}
+                  </div>
                 </div>
               </div>
-            </div>
+            )
+          })
+        )}
+      </div>
+    </div>
+  </div>
           </div>
 
           {/* Sidebar */}
@@ -576,7 +575,7 @@ export default function DealDetailsPage({ params }) {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Partner Type</span>
-                    <span className="font-medium capitalize">{partner?.organization?.type?.replace('_', ' ')}</span>
+                    <span className="font-medium capitalize text-black">{partner?.organization?.type?.replace('_', ' ')}</span>
                   </div>
                   
                   <div className="flex justify-between">
@@ -593,7 +592,7 @@ export default function DealDetailsPage({ params }) {
                   
                   <div className="flex justify-between">
                     <span className="text-gray-600">Discount</span>
-                    <span className="font-medium">{partner?.organization?.discount_percentage || 0}%</span>
+                    <span className="font-medium text-black">{partner?.organization?.discount_percentage || 0}%</span>
                   </div>
                 </div>
               </div>

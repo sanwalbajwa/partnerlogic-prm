@@ -309,7 +309,7 @@ export default function SettingsPage() {
                         type="text"
                         value={profileData.first_name}
                         onChange={(e) => handleInputChange('profile', 'first_name', e.target.value)}
-                        className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                        className={`block w-full px-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                           errors.first_name ? 'border-red-300' : 'border-gray-300'
                         }`}
                       />
@@ -324,7 +324,7 @@ export default function SettingsPage() {
                         type="text"
                         value={profileData.last_name}
                         onChange={(e) => handleInputChange('profile', 'last_name', e.target.value)}
-                        className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                        className={`block w-full px-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                           errors.last_name ? 'border-red-300' : 'border-gray-300'
                         }`}
                       />
@@ -339,7 +339,7 @@ export default function SettingsPage() {
                         type="email"
                         value={profileData.email}
                         onChange={(e) => handleInputChange('profile', 'email', e.target.value)}
-                        className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm bg-gray-50 text-gray-500"
+                        className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm bg-gray-50 text-gray-500"
                         disabled
                       />
                       <p className="mt-1 text-sm text-gray-500">Email cannot be changed here. Contact support if needed.</p>
@@ -353,7 +353,7 @@ export default function SettingsPage() {
                         type="tel"
                         value={profileData.phone}
                         onChange={(e) => handleInputChange('profile', 'phone', e.target.value)}
-                        className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="(555) 123-4567"
                       />
                     </div>
@@ -366,7 +366,7 @@ export default function SettingsPage() {
                         type="text"
                         value={profileData.title}
                         onChange={(e) => handleInputChange('profile', 'title', e.target.value)}
-                        className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Partner Manager"
                       />
                     </div>
@@ -379,7 +379,7 @@ export default function SettingsPage() {
                         type="text"
                         value={profileData.department}
                         onChange={(e) => handleInputChange('profile', 'department', e.target.value)}
-                        className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="block w-full px-3 py-2 text-black border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Sales"
                       />
                     </div>
@@ -531,7 +531,7 @@ export default function SettingsPage() {
                             type={showCurrentPassword ? "text" : "password"}
                             value={passwordData.current_password}
                             onChange={(e) => handleInputChange('password', 'current_password', e.target.value)}
-                            className={`block w-full px-3 py-2 pr-10 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                            className={`block w-full px-3 py-2 pr-10 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                                 errors.current_password ? 'border-red-300' : 'border-gray-300'
                             }`}
                             placeholder="Enter current password"
@@ -563,7 +563,7 @@ export default function SettingsPage() {
                             type={showNewPassword ? "text" : "password"}
                             value={passwordData.new_password}
                             onChange={(e) => handleInputChange('password', 'new_password', e.target.value)}
-                            className={`block w-full px-3 py-2 pr-10 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                            className={`block w-full px-3 py-2 pr-10 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                                 errors.new_password ? 'border-red-300' : 'border-gray-300'
                             }`}
                             placeholder="Enter new password"
@@ -595,7 +595,7 @@ export default function SettingsPage() {
                             type="password"
                             value={passwordData.confirm_password}
                             onChange={(e) => handleInputChange('password', 'confirm_password', e.target.value)}
-                            className={`block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                            className={`block w-full px-3 py-2 text-black border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                             errors.confirm_password ? 'border-red-300' : 'border-gray-300'
                             }`}
                             placeholder="Confirm new password"
