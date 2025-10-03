@@ -29,76 +29,95 @@ export default function AdminDashboardPage() {
   }, [])
 
   const loadDashboardData = async () => {
-    try {
-      setLoading(true)
+  try {
+    setLoading(true)
 
-      // Get total partners count
-      const { count: partnersCount } = await supabase
-        .from('partners')
-        .select('*', { count: 'exact', head: true })
+    // Get total partners count
+    const { count: partnersCount } = await supabase
+      .from('partners')
+      .select('*', { count: 'exact', head: true })
 
-      // Get total deals count and pipeline value
-      const { data: dealsData, count: dealsCount } = await supabase
-        .from('deals')
-        .select('deal_value', { count: 'exact' })
+    // Get total deals and calculate pipeline value
+    const { data: dealsData } = await supabase
+      .from('deals')
+      .select('deal_value')
 
-      const pipelineValue = dealsData?.reduce((sum, deal) => sum + (deal.deal_value || 0), 0) || 0
+    const dealsCount = dealsData?.length || 0
+    const pipelineValue = dealsData?.reduce((sum, deal) => sum + (deal.deal_value || 0), 0) || 0
 
-      // Get open tickets count
-      const { count: openTicketsCount } = await supabase
-        .from('support_tickets')
-        .select('*', { count: 'exact', head: true })
-        .in('status', ['open', 'in_progress'])
+    // Get open tickets count
+    const { count: openTicketsCount } = await supabase
+      .from('support_tickets')
+      .select('*', { count: 'exact', head: true })
+      .in('status', ['open', 'in_progress'])
 
-      // Get knowledge articles count
-      const { count: articlesCount } = await supabase
-        .from('knowledge_articles')
-        .select('*', { count: 'exact', head: true })
+    // Get knowledge articles count
+    const { count: articlesCount } = await supabase
+      .from('knowledge_articles')
+      .select('*', { count: 'exact', head: true })
 
-      // Get pending MDF requests count
-      const { count: mdfCount } = await supabase
-        .from('mdf_requests')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'pending')
+    // Get pending MDF requests count (if table exists)
+    const { count: mdfCount } = await supabase
+      .from('mdf_requests')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'pending')
 
-      // Get recent deals with partner info
-      const { data: recentDealsData } = await supabase
-        .from('deals')
-        .select(`
-          *,
-          partner:partners(first_name, last_name, organization:organizations(name))
-        `)
-        .order('created_at', { ascending: false })
-        .limit(5)
+    // Get recent deals with partner info
+    const { data: recentDealsData } = await supabase
+      .from('deals')
+      .select(`
+        *,
+        partners!inner(
+          id,
+          first_name,
+          last_name,
+          organizations!inner(
+            name
+          )
+        )
+      `)
+      .order('created_at', { ascending: false })
+      .limit(5)
 
-      // Get recent partners
-      const { data: recentPartnersData } = await supabase
-        .from('partners')
-        .select(`
-          *,
-          organization:organizations(*)
-        `)
-        .order('created_at', { ascending: false })
-        .limit(5)
+    // Get recent partners with organization
+    const { data: recentPartnersData } = await supabase
+      .from('partners')
+      .select(`
+        *,
+        organizations!inner(*)
+      `)
+      .order('created_at', { ascending: false })
+      .limit(5)
 
-      setStats({
-        totalPartners: partnersCount || 0,
-        totalDeals: dealsCount || 0,
-        totalPipelineValue: pipelineValue,
-        openTickets: openTicketsCount || 0,
-        knowledgeArticles: articlesCount || 0,
-        pendingMDFRequests: mdfCount || 0
-      })
+    console.log('Stats:', {
+      partnersCount,
+      dealsCount,
+      pipelineValue,
+      openTicketsCount,
+      articlesCount,
+      mdfCount
+    })
+    console.log('Recent Deals:', recentDealsData)
+    console.log('Recent Partners:', recentPartnersData)
 
-      setRecentDeals(recentDealsData || [])
-      setRecentPartners(recentPartnersData || [])
+    setStats({
+      totalPartners: partnersCount || 0,
+      totalDeals: dealsCount,
+      totalPipelineValue: pipelineValue,
+      openTickets: openTicketsCount || 0,
+      knowledgeArticles: articlesCount || 0,
+      pendingMDFRequests: mdfCount || 0
+    })
 
-    } catch (error) {
-      console.error('Error loading dashboard data:', error)
-    } finally {
-      setLoading(false)
-    }
+    setRecentDeals(recentDealsData || [])
+    setRecentPartners(recentPartnersData || [])
+
+  } catch (error) {
+    console.error('Error loading dashboard data:', error)
+  } finally {
+    setLoading(false)
   }
+}
 
   const formatCurrency = (amount) => {
     if (!amount) return '$0'
@@ -279,7 +298,7 @@ export default function AdminDashboardPage() {
                           {deal.customer_company} • {formatCurrency(deal.deal_value)}
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
-                          Partner: {deal.partner?.first_name} {deal.partner?.last_name} ({deal.partner?.organization?.name})
+                          Partner: {deal.partners?.first_name} {deal.partners?.last_name} ({deal.partners?.organizations?.name})
                         </p>
                       </div>
                       <div className="ml-4">
