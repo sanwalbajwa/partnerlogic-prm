@@ -28,77 +28,133 @@ export default function AdminDashboardPage() {
     loadDashboardData()
   }, [])
 
-  const loadDashboardData = async () => {
+const loadDashboardData = async () => {
   try {
     setLoading(true)
 
     // Get total partners count
-    const { count: partnersCount } = await supabase
+    const { count: partnersCount, error: partnersError } = await supabase
       .from('partners')
       .select('*', { count: 'exact', head: true })
 
-    // Get total deals and calculate pipeline value
-    const { data: dealsData } = await supabase
-      .from('deals')
-      .select('deal_value')
+    console.log('Partners count:', partnersCount, 'Error:', partnersError)
 
-    const dealsCount = dealsData?.length || 0
-    const pipelineValue = dealsData?.reduce((sum, deal) => sum + (deal.deal_value || 0), 0) || 0
+    // Get all deals (no joins first, to see what we have)
+    const { data: allDealsData, error: allDealsError } = await supabase
+      .from('deals')
+      .select('*')
+
+    console.log('All Deals Data:', allDealsData, 'Error:', allDealsError)
+
+    const dealsCount = allDealsData?.length || 0
+    const pipelineValue = allDealsData?.reduce((sum, deal) => sum + (deal.deal_value || 0), 0) || 0
 
     // Get open tickets count
-    const { count: openTicketsCount } = await supabase
+    const { count: openTicketsCount, error: ticketsError } = await supabase
       .from('support_tickets')
       .select('*', { count: 'exact', head: true })
       .in('status', ['open', 'in_progress'])
 
     // Get knowledge articles count
-    const { count: articlesCount } = await supabase
+    const { count: articlesCount, error: articlesError } = await supabase
       .from('knowledge_articles')
       .select('*', { count: 'exact', head: true })
 
-    // Get pending MDF requests count (if table exists)
-    const { count: mdfCount } = await supabase
+    // Get pending MDF requests count
+    const { count: mdfCount, error: mdfError } = await supabase
       .from('mdf_requests')
       .select('*', { count: 'exact', head: true })
       .eq('status', 'pending')
 
-    // Get recent deals with partner info
-    const { data: recentDealsData } = await supabase
+    // Get recent deals with partner info - SIMPLIFIED APPROACH
+    // First get deals, then get partner info separately
+    const { data: recentDealsRaw, error: recentDealsError } = await supabase
       .from('deals')
-      .select(`
-        *,
-        partners!inner(
-          id,
-          first_name,
-          last_name,
-          organizations!inner(
-            name
-          )
-        )
-      `)
+      .select('*')
       .order('created_at', { ascending: false })
       .limit(5)
+
+    console.log('Recent Deals Raw:', recentDealsRaw, 'Error:', recentDealsError)
+
+    // Enrich deals with partner data
+    let recentDealsData = []
+    if (recentDealsRaw && recentDealsRaw.length > 0) {
+      // Get unique partner IDs from deals
+      const partnerIds = [...new Set(recentDealsRaw.map(d => d.partner_id).filter(Boolean))]
+      
+      if (partnerIds.length > 0) {
+        // Get partner information
+        const { data: partnersData, error: partnersDataError } = await supabase
+          .from('partners')
+          .select(`
+            id,
+            first_name,
+            last_name,
+            organization_id,
+            organizations (
+              name,
+              tier
+            )
+          `)
+          .in('id', partnerIds)
+
+        console.log('Partners Data:', partnersData, 'Error:', partnersDataError)
+
+        // Map partner data to deals
+        if (partnersData) {
+          recentDealsData = recentDealsRaw.map(deal => ({
+            ...deal,
+            partner: partnersData.find(p => p.id === deal.partner_id) || null
+          }))
+        } else {
+          recentDealsData = recentDealsRaw
+        }
+      } else {
+        recentDealsData = recentDealsRaw
+      }
+    }
+
+    console.log('Enriched Recent Deals:', recentDealsData)
 
     // Get recent partners with organization
-    const { data: recentPartnersData } = await supabase
+    const { data: recentPartnersRaw, error: recentPartnersError } = await supabase
       .from('partners')
-      .select(`
-        *,
-        organizations!inner(*)
-      `)
+      .select('*')
       .order('created_at', { ascending: false })
       .limit(5)
 
-    console.log('Stats:', {
-      partnersCount,
-      dealsCount,
-      pipelineValue,
-      openTicketsCount,
-      articlesCount,
-      mdfCount
-    })
-    console.log('Recent Deals:', recentDealsData)
-    console.log('Recent Partners:', recentPartnersData)
+    console.log('Recent Partners Raw:', recentPartnersRaw, 'Error:', recentPartnersError)
+
+    // Enrich partners with organization data
+    let recentPartnersData = []
+    if (recentPartnersRaw && recentPartnersRaw.length > 0) {
+      // Get unique organization IDs
+      const orgIds = [...new Set(recentPartnersRaw.map(p => p.organization_id).filter(Boolean))]
+      
+      if (orgIds.length > 0) {
+        // Get organization information
+        const { data: orgsData, error: orgsDataError } = await supabase
+          .from('organizations')
+          .select('*')
+          .in('id', orgIds)
+
+        console.log('Organizations Data:', orgsData, 'Error:', orgsDataError)
+
+        // Map organization data to partners
+        if (orgsData) {
+          recentPartnersData = recentPartnersRaw.map(partner => ({
+            ...partner,
+            organization: orgsData.find(o => o.id === partner.organization_id) || null
+          }))
+        } else {
+          recentPartnersData = recentPartnersRaw
+        }
+      } else {
+        recentPartnersData = recentPartnersRaw
+      }
+    }
+
+    console.log('Enriched Recent Partners:', recentPartnersData)
 
     setStats({
       totalPartners: partnersCount || 0,
@@ -109,8 +165,8 @@ export default function AdminDashboardPage() {
       pendingMDFRequests: mdfCount || 0
     })
 
-    setRecentDeals(recentDealsData || [])
-    setRecentPartners(recentPartnersData || [])
+    setRecentDeals(recentDealsData)
+    setRecentPartners(recentPartnersData)
 
   } catch (error) {
     console.error('Error loading dashboard data:', error)
