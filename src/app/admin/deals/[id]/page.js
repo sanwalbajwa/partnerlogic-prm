@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { 
   ArrowLeft, User, Mail, Building2, DollarSign, Calendar, 
   Tag, Activity, CheckCircle, Clock, AlertCircle, Phone, 
-  FileText, Eye, Award, TrendingUp, BarChart3
+  FileText, Eye, Award, TrendingUp, BarChart3, HandshakeIcon, MessageSquare, Upload
 } from 'lucide-react'
 
 export default function AdminDealDetailsPage({ params }) {
@@ -21,13 +21,23 @@ export default function AdminDealDetailsPage({ params }) {
   const supabase = createClient()
 
   const stages = [
-    { value: 'lead', label: 'Lead', color: 'bg-gray-100 text-gray-800', icon: User },
-    { value: 'qualified', label: 'Qualified', color: 'bg-blue-100 text-blue-800', icon: CheckCircle },
-    { value: 'proposal', label: 'Proposal', color: 'bg-yellow-100 text-yellow-800', icon: FileText },
-    { value: 'negotiation', label: 'Negotiation', color: 'bg-purple-100 text-purple-800', icon: TrendingUp },
-    { value: 'closed_won', label: 'Closed Won', color: 'bg-green-100 text-green-800', icon: CheckCircle },
-    { value: 'closed_lost', label: 'Closed Lost', color: 'bg-red-100 text-red-800', icon: AlertCircle }
-  ]
+  { value: 'new_deal', label: 'New Deal', color: 'bg-gray-100 text-gray-800', icon: User },
+  { value: 'need_analysis', label: 'Need Analysis', color: 'bg-blue-100 text-blue-800', icon: CheckCircle },
+  { value: 'proposal', label: 'Proposal', color: 'bg-yellow-100 text-yellow-800', icon: FileText },
+  { value: 'negotiation', label: 'Negotiation', color: 'bg-purple-100 text-purple-800', icon: MessageSquare },
+  { value: 'closed_won', label: 'Closed Won', color: 'bg-green-100 text-green-800', icon: CheckCircle },
+  { value: 'closed_lost', label: 'Closed Lost', color: 'bg-red-100 text-red-800', icon: AlertCircle },
+  { value: 'urs', label: 'URS', color: 'bg-cyan-100 text-cyan-800', icon: FileText },
+  { value: 'base_deployment', label: 'Base Deployment', color: 'bg-indigo-100 text-indigo-800', icon: Upload },
+  { value: 'gap_assessment', label: 'Gap Assessment', color: 'bg-pink-100 text-pink-800', icon: Activity },
+  { value: 'development', label: 'Development', color: 'bg-orange-100 text-orange-800', icon: Activity },
+  { value: 'uat', label: 'UAT', color: 'bg-teal-100 text-teal-800', icon: CheckCircle },
+  { value: 'iq', label: 'IQ', color: 'bg-lime-100 text-lime-800', icon: CheckCircle },
+  { value: 'oq', label: 'OQ', color: 'bg-amber-100 text-amber-800', icon: CheckCircle },
+  { value: 'deployment', label: 'Deployment', color: 'bg-emerald-100 text-emerald-800', icon: Upload },
+  { value: 'pq', label: 'PQ', color: 'bg-violet-100 text-violet-800', icon: CheckCircle },
+  { value: 'live', label: 'LIVE', color: 'bg-green-200 text-green-800', icon: CheckCircle }
+]
 
   useEffect(() => {
     if (params.id) {
@@ -215,7 +225,7 @@ export default function AdminDealDetailsPage({ params }) {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Deal Progress */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+            {/* <div className="bg-white rounded-xl shadow-sm border border-gray-200">
               <div className="p-6 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900">Deal Progress</h2>
               </div>
@@ -247,7 +257,7 @@ export default function AdminDealDetailsPage({ params }) {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Deal Information */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -295,6 +305,13 @@ export default function AdminDealDetailsPage({ params }) {
                         <p className="text-sm text-gray-600">{deal.customer_company}</p>
                       </div>
                     </div>
+                    <div className="flex items-center space-x-3">
+                    <HandshakeIcon className="h-5 w-5 text-gray-400" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Deal Stage</p>
+                      <p className="text-sm text-gray-600">{getStageInfo(deal.stage).label}</p>
+                    </div>
+                  </div>
                   </div>
 
                   <div className="space-y-4">
