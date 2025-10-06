@@ -15,27 +15,27 @@ export default function NewDealPage() {
   const [success, setSuccess] = useState(false)
   
   const [formData, setFormData] = useState({
-    customer_name: '',
-    customer_email: '',
-    customer_company: '',
-    customer_phone: '',
-    deal_value: '',
-    stage: 'lead',
-    priority: 'medium',
-    support_type_needed: 'sales',
-    notes: '',
-    expected_close_date: ''
-  })
+  customer_name: '',
+  customer_email: '',
+  customer_company: '',
+  customer_phone: '',
+  deal_value: '',
+  stage: 'new_deal',  // ✅ NEW - Use this instead
+  priority: 'medium',
+  support_type_needed: 'sales',
+  notes: '',
+  expected_close_date: ''
+})
 
   const router = useRouter()
   const supabase = createClient()
 
   const stages = [
-    { value: 'lead', label: 'Lead' },
-    { value: 'qualified', label: 'Qualified' },
-    { value: 'proposal', label: 'Proposal' },
-    { value: 'negotiation', label: 'Negotiation' }
-  ]
+  { value: 'new_deal', label: 'New Deal' },
+  { value: 'need_analysis', label: 'Need Analysis' },
+  { value: 'proposal', label: 'Proposal' },
+  { value: 'negotiation', label: 'Negotiation' }
+]
 
   const priorities = [
     { value: 'low', label: 'Low' },

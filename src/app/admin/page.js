@@ -37,17 +37,21 @@ const loadDashboardData = async () => {
       .from('partners')
       .select('*', { count: 'exact', head: true })
 
-    console.log('Partners count:', partnersCount, 'Error:', partnersError)
+    if (partnersError) {
+      console.error('Partners count error:', partnersError)
+    }
 
-    // Get all deals (no joins first, to see what we have)
+    // Get all deals count and calculate pipeline value
     const { data: allDealsData, error: allDealsError } = await supabase
       .from('deals')
-      .select('*')
+      .select('deal_value')
 
-    console.log('All Deals Data:', allDealsData, 'Error:', allDealsError)
+    if (allDealsError) {
+      console.error('Deals error:', allDealsError)
+    }
 
     const dealsCount = allDealsData?.length || 0
-    const pipelineValue = allDealsData?.reduce((sum, deal) => sum + (deal.deal_value || 0), 0) || 0
+    const pipelineValue = allDealsData?.reduce((sum, deal) => sum + (Number(deal.deal_value) || 0), 0) || 0
 
     // Get open tickets count
     const { count: openTicketsCount, error: ticketsError } = await supabase
@@ -55,10 +59,18 @@ const loadDashboardData = async () => {
       .select('*', { count: 'exact', head: true })
       .in('status', ['open', 'in_progress'])
 
+    if (ticketsError) {
+      console.error('Tickets error:', ticketsError)
+    }
+
     // Get knowledge articles count
     const { count: articlesCount, error: articlesError } = await supabase
       .from('knowledge_articles')
       .select('*', { count: 'exact', head: true })
+
+    if (articlesError) {
+      console.error('Articles error:', articlesError)
+    }
 
     // Get pending MDF requests count
     const { count: mdfCount, error: mdfError } = await supabase
@@ -66,95 +78,102 @@ const loadDashboardData = async () => {
       .select('*', { count: 'exact', head: true })
       .eq('status', 'pending')
 
-    // Get recent deals with partner info - SIMPLIFIED APPROACH
-    // First get deals, then get partner info separately
+    if (mdfError) {
+      console.error('MDF error:', mdfError)
+    }
+
+    // Get recent deals
     const { data: recentDealsRaw, error: recentDealsError } = await supabase
       .from('deals')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(5)
 
-    console.log('Recent Deals Raw:', recentDealsRaw, 'Error:', recentDealsError)
+    if (recentDealsError) {
+      console.error('Recent deals error:', recentDealsError)
+    }
 
     // Enrich deals with partner data
     let recentDealsData = []
     if (recentDealsRaw && recentDealsRaw.length > 0) {
-      // Get unique partner IDs from deals
       const partnerIds = [...new Set(recentDealsRaw.map(d => d.partner_id).filter(Boolean))]
       
       if (partnerIds.length > 0) {
-        // Get partner information
         const { data: partnersData, error: partnersDataError } = await supabase
           .from('partners')
-          .select(`
-            id,
-            first_name,
-            last_name,
-            organization_id,
-            organizations (
-              name,
-              tier
-            )
-          `)
+          .select('id, first_name, last_name, organization_id')
           .in('id', partnerIds)
 
-        console.log('Partners Data:', partnersData, 'Error:', partnersDataError)
-
-        // Map partner data to deals
-        if (partnersData) {
-          recentDealsData = recentDealsRaw.map(deal => ({
-            ...deal,
-            partner: partnersData.find(p => p.id === deal.partner_id) || null
-          }))
-        } else {
-          recentDealsData = recentDealsRaw
+        if (partnersDataError) {
+          console.error('Partners data error:', partnersDataError)
         }
+
+        const orgIds = [...new Set(partnersData?.map(p => p.organization_id).filter(Boolean) || [])]
+        
+        let orgsData = []
+        if (orgIds.length > 0) {
+          const { data: orgsDataResult, error: orgsDataError } = await supabase
+            .from('organizations')
+            .select('id, name, tier')
+            .in('id', orgIds)
+
+          if (orgsDataError) {
+            console.error('Orgs data error:', orgsDataError)
+          }
+          orgsData = orgsDataResult || []
+        }
+
+        recentDealsData = recentDealsRaw.map(deal => {
+          const partner = partnersData?.find(p => p.id === deal.partner_id)
+          const org = partner ? orgsData.find(o => o.id === partner.organization_id) : null
+          return {
+            ...deal,
+            partners: partner ? {
+              first_name: partner.first_name,
+              last_name: partner.last_name,
+              organizations: org || null
+            } : null
+          }
+        })
       } else {
         recentDealsData = recentDealsRaw
       }
     }
 
-    console.log('Enriched Recent Deals:', recentDealsData)
-
-    // Get recent partners with organization
+    // Get recent partners
     const { data: recentPartnersRaw, error: recentPartnersError } = await supabase
       .from('partners')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(5)
 
-    console.log('Recent Partners Raw:', recentPartnersRaw, 'Error:', recentPartnersError)
+    if (recentPartnersError) {
+      console.error('Recent partners error:', recentPartnersError)
+    }
 
     // Enrich partners with organization data
     let recentPartnersData = []
     if (recentPartnersRaw && recentPartnersRaw.length > 0) {
-      // Get unique organization IDs
       const orgIds = [...new Set(recentPartnersRaw.map(p => p.organization_id).filter(Boolean))]
       
+      let orgsData = []
       if (orgIds.length > 0) {
-        // Get organization information
-        const { data: orgsData, error: orgsDataError } = await supabase
+        const { data: orgsDataResult, error: orgsDataError } = await supabase
           .from('organizations')
           .select('*')
           .in('id', orgIds)
 
-        console.log('Organizations Data:', orgsData, 'Error:', orgsDataError)
-
-        // Map organization data to partners
-        if (orgsData) {
-          recentPartnersData = recentPartnersRaw.map(partner => ({
-            ...partner,
-            organization: orgsData.find(o => o.id === partner.organization_id) || null
-          }))
-        } else {
-          recentPartnersData = recentPartnersRaw
+        if (orgsDataError) {
+          console.error('Partner orgs error:', orgsDataError)
         }
-      } else {
-        recentPartnersData = recentPartnersRaw
+        orgsData = orgsDataResult || []
       }
-    }
 
-    console.log('Enriched Recent Partners:', recentPartnersData)
+      recentPartnersData = recentPartnersRaw.map(partner => ({
+        ...partner,
+        organization: orgsData.find(o => o.id === partner.organization_id) || null
+      }))
+    }
 
     setStats({
       totalPartners: partnersCount || 0,

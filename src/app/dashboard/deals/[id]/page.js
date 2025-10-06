@@ -290,7 +290,7 @@ export default function DealDetailsPage({ params }) {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
   {/* Deal Progress - MOVED TO TOP */}
-  <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+  {/* <div className="bg-white rounded-xl shadow-sm border border-gray-200">
     <div className="p-6 border-b border-gray-200">
       <h2 className="text-lg font-semibold text-gray-900">Deal Progress</h2>
     </div>
@@ -333,7 +333,7 @@ export default function DealDetailsPage({ params }) {
         </div>
       </div>
     </div>
-  </div>
+  </div> */}
 
   {/* Deal Information - NOW SECOND */}
   <div className="bg-white rounded-xl shadow-sm border border-gray-200">

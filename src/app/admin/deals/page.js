@@ -427,7 +427,7 @@ export default function AdminAllDealsPage() {
 
                     <div className="flex items-center space-x-2 ml-4">
                       <Link
-                        href={`/dashboard/deals/${deal.id}`}
+                        href={`/admin/deals/${deal.id}`}
                         className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                       >
                         <Eye className="h-4 w-4 mr-1" />
