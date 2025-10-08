@@ -289,7 +289,8 @@ export default function AdminKanbanView({ deals, onDealUpdate }) {
     if (!activeDeal) return
 
     const newAdminStage = activeDeal.admin_stage
-    const oldAdminStage = deals.find(d => d.id === activeId)?.admin_stage || 'urs'
+    const originalDeal = deals.find(d => d.id === activeId)
+    const oldAdminStage = originalDeal?.admin_stage || 'urs'
 
     // Don't update if stage hasn't changed
     if (newAdminStage === oldAdminStage) return
@@ -298,7 +299,8 @@ export default function AdminKanbanView({ deals, onDealUpdate }) {
 
     // Update in database - only update admin_stage
     try {
-      const { data, error } = await supabase
+      // Update without .single() first to see what's returned
+      const { data, error, count } = await supabase
         .from('deals')
         .update({
           admin_stage: newAdminStage,
@@ -307,34 +309,50 @@ export default function AdminKanbanView({ deals, onDealUpdate }) {
         .eq('id', activeId)
         .select()
 
+      console.log('Update response:', { data, error, count })
+
       if (error) {
-        console.error('Supabase error:', error)
+        console.error('Supabase update error:', error)
         throw error
       }
 
-      console.log('Update successful:', data)
+      if (!data || data.length === 0) {
+        throw new Error('No deal was updated. Check if the deal exists and you have permissions.')
+      }
 
-      // Log activity
-      await supabase
-        .from('deal_activities')
-        .insert([{
-          deal_id: activeId,
-          activity_type: 'stage_updated',
-          description: `Implementation stage updated to ${ADMIN_STAGES.find(s => s.id === newAdminStage)?.label}`
-        }])
+      const updatedDeal = data[0]
+      console.log('Update successful:', updatedDeal)
 
-      // Notify parent component with updated deals
+      // Log activity (don't let this fail the whole operation)
+      try {
+        await supabase
+          .from('deal_activities')
+          .insert([{
+            deal_id: activeId,
+            activity_type: 'stage_updated',
+            description: `Implementation stage updated to ${ADMIN_STAGES.find(s => s.id === newAdminStage)?.label}`
+          }])
+      } catch (activityError) {
+        console.error('Error logging activity:', activityError)
+        // Don't throw - activity logging failure shouldn't fail the update
+      }
+
+      // Notify parent component with updated deals - use the fresh data from DB
       if (onDealUpdate) {
         const updatedDeals = deals.map(deal => 
-          deal.id === activeId ? { ...deal, admin_stage: newAdminStage } : deal
+          deal.id === activeId ? updatedDeal : deal
         )
         onDealUpdate(updatedDeals)
       }
     } catch (error) {
       console.error('Error updating deal admin stage:', error)
-      alert('Failed to update deal stage. Please try again.')
-      // Revert on error
-      setLocalDeals(dealsWithAdminStage)
+      console.error('Error message:', error.message)
+      alert(`Failed to update deal stage: ${error.message || 'Please try again.'}`)
+      // Revert local state to match original deals
+      setLocalDeals(deals.map(deal => ({
+        ...deal,
+        admin_stage: deal.admin_stage || 'urs'
+      })))
     }
   }
 
