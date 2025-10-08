@@ -125,60 +125,61 @@ export default function NewDealPage() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-    if (!validateForm()) {
-      return
-    }
-
-    try {
-      setSaving(true)
-
-      const dealData = {
-        partner_id: partner.id,
-        customer_name: formData.customer_name.trim(),
-        customer_email: formData.customer_email.trim(),
-        customer_company: formData.customer_company.trim(),
-        deal_value: formData.deal_value ? parseFloat(formData.deal_value) : null,
-        stage: formData.stage,
-        priority: formData.priority,
-        support_type_needed: formData.support_type_needed,
-        notes: formData.notes.trim() || null
-      }
-
-      const { data, error } = await supabase
-        .from('deals')
-        .insert([dealData])
-        .select()
-
-      if (error) throw error
-
-      // Create initial activity log
-      if (data[0]) {
-        await supabase
-          .from('deal_activities')
-          .insert([{
-            deal_id: data[0].id,
-            user_id: partner.auth_user_id,
-            activity_type: 'created',
-            description: `Deal registered by ${partner.first_name} ${partner.last_name}`
-          }])
-      }
-
-      setSuccess(true)
-      
-      // Redirect after a short delay
-      setTimeout(() => {
-        router.push(`/dashboard/deals/${data[0].id}`)
-      }, 2000)
-
-    } catch (error) {
-      console.error('Error creating deal:', error)
-      setErrors({ submit: 'Failed to register deal. Please try again.' })
-    } finally {
-      setSaving(false)
-    }
+  e.preventDefault()
+  
+  if (!validateForm()) {
+    return
   }
+
+  try {
+    setSaving(true)
+
+    const dealData = {
+      partner_id: partner.id,
+      customer_name: formData.customer_name.trim(),
+      customer_email: formData.customer_email.trim(),
+      customer_company: formData.customer_company.trim(),
+      deal_value: formData.deal_value ? parseFloat(formData.deal_value) : null,
+      stage: formData.stage,  // Partner sales stage
+      admin_stage: 'urs',     // ✅ NEW: Default admin stage to URS
+      priority: formData.priority,
+      support_type_needed: formData.support_type_needed,
+      notes: formData.notes.trim() || null
+    }
+
+    const { data, error } = await supabase
+      .from('deals')
+      .insert([dealData])
+      .select()
+
+    if (error) throw error
+
+    // Create initial activity log
+    if (data[0]) {
+      await supabase
+        .from('deal_activities')
+        .insert([{
+          deal_id: data[0].id,
+          user_id: partner.auth_user_id,
+          activity_type: 'created',
+          description: `Deal registered by ${partner.first_name} ${partner.last_name}`
+        }])
+    }
+
+    setSuccess(true)
+    
+    // Redirect after a short delay
+    setTimeout(() => {
+      router.push(`/dashboard/deals/${data[0].id}`)
+    }, 2000)
+
+  } catch (error) {
+    console.error('Error creating deal:', error)
+    setErrors({ submit: 'Failed to register deal. Please try again.' })
+  } finally {
+    setSaving(false)
+  }
+}
 
   if (loading) {
     return (
