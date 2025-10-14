@@ -1,12 +1,12 @@
 // src/app/auth/callback/page.js
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Users } from 'lucide-react'
 
-export default function AuthCallbackPage() {
+function AuthCallbackContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClient()
@@ -28,6 +28,7 @@ export default function AuthCallbackPage() {
         // Check if there's a hash in the URL (for invite tokens)
         const hash = window.location.hash
         if (hash) {
+          console.log('Found hash:', hash)
           const hashParams = new URLSearchParams(hash.substring(1))
           const accessToken = hashParams.get('access_token')
           const refreshToken = hashParams.get('refresh_token')
@@ -186,5 +187,26 @@ export default function AuthCallbackPage() {
         )}
       </div>
     </div>
+  )
+}
+
+// Loading fallback component
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center py-12 px-4">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    </div>
+  )
+}
+
+// Main export with Suspense boundary
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <AuthCallbackContent />
+    </Suspense>
   )
 }
