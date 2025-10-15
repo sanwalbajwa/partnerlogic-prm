@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { 
   Users, BarChart3, Headphones, FileText, Settings, 
   Menu, X, LogOut, Bell, Search, Home, TrendingUp,
-  User, ChevronDown
+  User, ChevronDown, BookOpen
 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
@@ -77,7 +77,7 @@ export default function DashboardLayout({ children }) {
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     { name: 'Deals', href: '/dashboard/deals', icon: BarChart3 },
     { name: 'Support', href: '/dashboard/support', icon: Headphones },
-    { name: 'Knowledge Base', href: '/dashboard/knowledge', icon: FileText },
+    { name: 'Learning', href: '/dashboard/learning', icon: BookOpen },
     { name: 'MDF Requests', href: '/dashboard/mdf', icon: TrendingUp },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ].map(item => ({

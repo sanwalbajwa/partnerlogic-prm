@@ -8,7 +8,8 @@ import Link from 'next/link'
 import { 
   Users, BarChart3, FileText, Settings, Shield,
   Menu, X, LogOut, Bell, Search, Home, Building2,
-  User, ChevronDown
+  User, ChevronDown, BookOpen, Headphones,
+  TrendingUp
 } from 'lucide-react'
 
 export default function AdminLayout({ children }) {
@@ -75,7 +76,8 @@ export default function AdminLayout({ children }) {
     { name: 'Dashboard', href: '/admin', icon: Home, current: pathname === '/admin' },
     { name: 'All Deals', href: '/admin/deals', icon: BarChart3, current: pathname.startsWith('/admin/deals') },
     { name: 'Partners', href: '/admin/partners', icon: Building2, current: pathname.startsWith('/admin/partners') },
-    { name: 'Knowledge Base', href: '/admin/knowledge', icon: FileText, current: pathname.startsWith('/admin/knowledge') },
+    { name: 'Admins', href: '/admin/admins', icon: Shield, current: pathname.startsWith('/admin/admins') },
+    { name: 'LMS', href: '/admin/lms', icon: BookOpen, current: pathname.startsWith('/admin/lms') },
     { name: 'Settings', href: '/admin/settings', icon: Settings, current: pathname === '/admin/settings' },
   ]
 
