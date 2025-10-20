@@ -24,7 +24,7 @@ export default function DealsPage() {
   const [sortOrder, setSortOrder] = useState('desc')
   const [showFilters, setShowFilters] = useState(false)
   const [partner, setPartner] = useState(null)
-  const [viewMode, setViewMode] = useState('list') // 'list' or 'kanban'
+  const [viewMode, setViewMode] = useState('kanban') // 'list' or 'kanban'
   
   const supabase = createClient()
 

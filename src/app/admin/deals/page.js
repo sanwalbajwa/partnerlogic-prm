@@ -24,7 +24,7 @@ export default function AdminAllDealsPage() {
   const [sortOrder, setSortOrder] = useState('desc')
   const [showFilters, setShowFilters] = useState(false)
   const [partners, setPartners] = useState([])
-  const [viewMode, setViewMode] = useState('list') // 'list' or 'kanban'
+  const [viewMode, setViewMode] = useState('kanban') // 'list' or 'kanban'
 
   const supabase = createClient()
 
