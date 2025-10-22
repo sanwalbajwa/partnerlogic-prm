@@ -7,9 +7,15 @@ import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-
 import { CSS } from '@dnd-kit/utilities'
 import { createClient } from '@/lib/supabase/client'
 import { Building2, DollarSign, User, GripVertical, Calendar } from 'lucide-react'
-
+import Link from 'next/link'
 // ADMIN STAGES - URS to LIVE (Implementation stages only)
 const ADMIN_STAGES = [
+  { id: 'new_deal', label: 'New Deal', color: 'bg-gray-100 border-gray-300' },
+  { id: 'need_analysis', label: 'Need Analysis', color: 'bg-blue-100 border-blue-300' },
+  { id: 'proposal', label: 'Proposal', color: 'bg-yellow-100 border-yellow-300' },
+  { id: 'negotiation', label: 'Negotiation', color: 'bg-purple-100 border-purple-300' },
+  { id: 'closed_won', label: 'Closed Won', color: 'bg-green-100 border-green-300' },
+  { id: 'closed_lost', label: 'Closed Lost', color: 'bg-red-100 border-red-300' },
   { id: 'urs', label: 'URS', color: 'bg-cyan-100 border-cyan-300' },
   { id: 'base_deployment', label: 'Base Deployment', color: 'bg-indigo-100 border-indigo-300' },
   { id: 'gap_assessment', label: 'Gap Assessment', color: 'bg-pink-100 border-pink-300' },
@@ -22,6 +28,7 @@ const ADMIN_STAGES = [
   { id: 'live', label: 'LIVE', color: 'bg-green-200 border-green-400' }
 ]
 
+// Deal Card Component (Draggable)
 // Deal Card Component (Draggable)
 function DealCard({ deal, isDragging }) {
   const {
@@ -43,7 +50,8 @@ function DealCard({ deal, isDragging }) {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
-      minimumFractionDigits: 0
+      minimumFractionDigits: 0,
+      notation: 'compact'
     }).format(amount)
   }
 
@@ -86,61 +94,70 @@ function DealCard({ deal, isDragging }) {
     <div
       ref={setNodeRef}
       style={style}
-      className="bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-shadow cursor-move group"
+      className="bg-white rounded-lg border border-gray-200 p-3 mb-2 shadow-sm hover:shadow-md transition-shadow cursor-move group"
       {...attributes}
       {...listeners}
     >
       {/* Drag Handle */}
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-gray-900 text-sm truncate">
+          <h4 className="font-semibold text-gray-900 text-xs truncate">
             {deal.customer_name}
           </h4>
-          <p className="text-xs text-gray-600 truncate mt-1">
+          <p className="text-[10px] text-gray-600 truncate mt-0.5">
             {deal.customer_company}
           </p>
         </div>
         <div className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <GripVertical className="h-4 w-4 text-gray-400" />
+          <GripVertical className="h-3 w-3 text-gray-400" />
         </div>
       </div>
 
       {/* Sales Stage Badge */}
       {deal.stage && (
         <div className="mb-2">
-          <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${getSalesStageColor(deal.stage)}`}>
+          <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${getSalesStageColor(deal.stage)}`}>
             Sales: {getSalesStageLabel(deal.stage)}
           </span>
         </div>
       )}
 
       {/* Deal Value */}
-      <div className="flex items-center text-sm font-semibold text-green-600 mb-3">
-        <DollarSign className="h-4 w-4 mr-1" />
+      <div className="flex items-center text-xs font-semibold text-green-600 mb-2">
+        <DollarSign className="h-3 w-3 mr-1" />
         {formatCurrency(deal.deal_value)}
       </div>
 
       {/* Priority & Date */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className={`w-2 h-2 rounded-full ${getPriorityColor(deal.priority)}`}></div>
-          <span className="text-xs text-gray-600 capitalize">{deal.priority}</span>
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center space-x-1">
+          <div className={`w-1.5 h-1.5 rounded-full ${getPriorityColor(deal.priority)}`}></div>
+          <span className="text-[10px] text-gray-600 capitalize">{deal.priority}</span>
         </div>
-        <div className="text-xs text-gray-500 flex items-center">
-          <Calendar className="h-3 w-3 mr-1" />
+        <div className="text-[10px] text-gray-500 flex items-center">
+          <Calendar className="h-2.5 w-2.5 mr-0.5" />
           {new Date(deal.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
         </div>
       </div>
 
       {/* Partner Info */}
       {deal.partner && (
-        <div className="mt-2 pt-2 border-t border-gray-100">
-          <div className="flex items-center text-xs text-gray-500">
-            <User className="h-3 w-3 mr-1" />
+        <div className="pt-2 border-t border-gray-100">
+          <div className="flex items-center text-[10px] text-gray-500 mb-2">
+            <User className="h-2.5 w-2.5 mr-1" />
             <span className="truncate">{deal.partner.first_name} {deal.partner.last_name}</span>
           </div>
         </div>
       )}
+
+      {/* Open Deal Link */}
+      <Link
+        href={`/admin/deals/${deal.id}`}
+        onClick={(e) => e.stopPropagation()}
+        className="block w-full text-center px-2 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-[10px] font-medium rounded transition-colors mt-2"
+      >
+        Open Deal
+      </Link>
     </div>
   )
 }
@@ -169,16 +186,16 @@ function KanbanColumn({ stage, deals, activeId }) {
   }
 
   return (
-    <div className="flex flex-col w-80 flex-shrink-0 bg-gray-50 rounded-lg">
+    <div className="flex flex-col w-56 flex-shrink-0 bg-gray-50 rounded-lg">
       {/* Column Header */}
-      <div className={`p-4 border-b-4 rounded-t-lg ${stage.color}`}>
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="font-semibold text-gray-900 text-sm">{stage.label}</h3>
-          <span className="bg-white px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+      <div className={`p-3 border-b-4 rounded-t-lg ${stage.color}`}>
+        <div className="flex items-center justify-between mb-1">
+          <h3 className="font-semibold text-gray-900 text-xs">{stage.label}</h3>
+          <span className="bg-white px-1.5 py-0.5 rounded-full text-[10px] font-medium text-gray-700">
             {dealsInStage.length}
           </span>
         </div>
-        <div className="text-xs font-medium text-gray-600">
+        <div className="text-[10px] font-medium text-gray-600">
           {formatCurrency(totalValue)}
         </div>
       </div>
@@ -186,7 +203,7 @@ function KanbanColumn({ stage, deals, activeId }) {
       {/* Drop Zone */}
       <div
         ref={setNodeRef}
-        className="flex-1 p-3 overflow-y-auto min-h-[500px] max-h-[calc(100vh-300px)]"
+        className="flex-1 p-2 overflow-y-auto min-h-[500px] max-h-[calc(100vh-300px)]"
       >
         <SortableContext items={dealsInStage.map(d => d.id)} strategy={verticalListSortingStrategy}>
           {dealsInStage.map(deal => (
@@ -199,7 +216,7 @@ function KanbanColumn({ stage, deals, activeId }) {
         </SortableContext>
 
         {dealsInStage.length === 0 && (
-          <div className="text-center py-8 text-gray-400 text-sm">
+          <div className="text-center py-8 text-gray-400 text-xs">
             Drop deals here
           </div>
         )}
