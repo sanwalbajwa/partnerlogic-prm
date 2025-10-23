@@ -78,6 +78,7 @@ export default function AdminLayout({ children }) {
     { name: 'Partners', href: '/admin/partners', icon: Building2, current: pathname.startsWith('/admin/partners') },
     { name: 'Admins', href: '/admin/admins', icon: Shield, current: pathname.startsWith('/admin/admins') },
     { name: 'LMS', href: '/admin/lms', icon: BookOpen, current: pathname.startsWith('/admin/lms') },
+    { name: 'Knowledge Base', href: '/admin/knowledge', icon: FileText, current: pathname.startsWith('/admin/knowledge') },
     { name: 'Settings', href: '/admin/settings', icon: Settings, current: pathname === '/admin/settings' },
   ]
 

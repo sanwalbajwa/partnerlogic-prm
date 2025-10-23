@@ -78,6 +78,7 @@ export default function DashboardLayout({ children }) {
     { name: 'Deals', href: '/dashboard/deals', icon: BarChart3 },
     { name: 'Support', href: '/dashboard/support', icon: Headphones },
     { name: 'Learning', href: '/dashboard/learning', icon: BookOpen },
+    { name: 'Knowledge Base', href: '/dashboard/knowledge', icon: FileText },
     { name: 'MDF Requests', href: '/dashboard/mdf', icon: TrendingUp },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ].map(item => ({
