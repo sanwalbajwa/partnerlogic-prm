@@ -53,17 +53,11 @@ jobs:
         with:
           name: node-app
 
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_BAA143B7359B4489B5B826CA16BE3C1C }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EC3712FDB1674BD08A7A03E1A5C06694 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4EFD3A410FED4D75B59E45E3F26A6CA7 }}
-
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'partnerrlogic-prm-e3e8akexbze0duhv'
           slot-name: 'Production'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: .
