@@ -22,6 +22,10 @@ jobs:
           node-version: '22.x'
 
       - name: npm install, build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://fgohqdsoctmkeoyesrjm.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnb2hxZHNvY3Rta2VveWVzcmptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3Nzg4OTksImV4cCI6MjA3NDM1NDg5OX0.cext_WmNGH71cZaaD2DRy0lGq0UOgyAhnMkmhEU6Kiw
+          SUPABASE_SERVICE_ROLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnb2hxZHNvY3Rta2VveWVzcmptIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1ODc3ODg5OSwiZXhwIjoyMDc0MzU0ODk5fQ.HPqTMYYTV_AKOn-R_KsY0RlLmmkSmkD3n09P_HXnyp0
         run: |
           npm ci
           npm run build --if-present
