@@ -21,7 +21,7 @@ export default function DashboardPage() {
     activeTickets: 0,
     conversionRate: 0,
     totalRevenue: 0
-  })
+  }) 
   const [loading, setLoading] = useState(true)
   const [assignedProducts, setAssignedProducts] = useState([])
   const supabase = createClient()
